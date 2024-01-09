@@ -182,8 +182,8 @@ Future<void> _realizarPrestamo() async {
     if (response.statusCode == 201) {
       // Préstamo realizado exitosamente
       // navegar de nuevo a la pantalla principal
-      _showSuccessDialog('Préstamo realizado exitosamente');
       Navigator.pop(context, true);
+      _showSuccessDialog('Préstamo realizado exitosamente');
     } else {
       // Manejar el error en caso de que la solicitud falle
       final Map<String, dynamic> errorData = json.decode(response.body);

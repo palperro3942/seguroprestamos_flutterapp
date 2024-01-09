@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:seguroprestamos_flutterapp/src/inversionista/addInversionista.dart';
 import 'dart:convert';
 
 import 'package:seguroprestamos_flutterapp/src/inversionista/inversionista_details.dart';
@@ -89,44 +90,13 @@ class _InversionistasScreenState extends State<InversionistasScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _mostrarAgregarInversionistaDialog();
+          // Navegar a la pantalla de agregar inversionista
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AgregarInversionistaScreen()),
+          );
         },
         child: Icon(Icons.person_add),
-      ),
-    );
-  }
-
-  void _mostrarAgregarInversionistaDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Agregar Inversionista'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Aquí puedes agregar campos para ingresar la información del inversionista
-            // Por ejemplo, campos de texto para el nombre, apellido, teléfono, dirección, etc.
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Cerrar el diálogo
-            },
-            child: Text('Cancelar'),
-          ),
-          TextButton(
-            onPressed: () {
-              // Aquí puedes agregar lógica para guardar el nuevo inversionista
-              // Puedes acceder a la información ingresada utilizando el controlador
-              // _nombreController.text, _apellidoController.text, _telefonoController.text, etc.
-              // También puedes realizar una solicitud POST para guardar el nuevo inversionista en el servidor.
-              _fetchInversionistas(); // Actualiza la lista de inversionistas después de agregar uno nuevo.
-              Navigator.pop(context); // Cerrar el diálogo
-            },
-            child: Text('Guardar'),
-          ),
-        ],
       ),
     );
   }

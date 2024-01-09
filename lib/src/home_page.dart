@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:seguroprestamos_flutterapp/src/abonos.dart';
 import 'package:seguroprestamos_flutterapp/src/clientes/clientes.dart';
+import 'package:seguroprestamos_flutterapp/src/inversiones/inversiones.dart';
 import 'package:seguroprestamos_flutterapp/src/inversionista/inversionistas.dart';
+import 'package:seguroprestamos_flutterapp/src/prestamo/consultarPrestamo.dart';
+import 'package:seguroprestamos_flutterapp/src/prestamo/prestamo.dart';
 import 'package:seguroprestamos_flutterapp/src/reportes.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -19,7 +22,22 @@ class MyHomePage extends StatelessWidget {
           crossAxisSpacing: 16.0,
           children: <Widget>[
             _buildButton(context, 'Solicitar Préstamo', Colors.blue, () {
-              // Lógica para la pantalla de solicitud de préstamo
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PrestamoScreen()),
+              );
+            }),
+            _buildButton(context, 'Consultar prestamos', Colors.blue, () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ConsultarPrestamoScreen()),
+              );
+            }),
+            _buildButton(context, 'Consultar inversiones', Colors.red, () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => InversionesScreen()),
+              );
             }),
             _buildButton(context, 'Abonos', Colors.green, () {
               // Navegar a la pantalla de abonos

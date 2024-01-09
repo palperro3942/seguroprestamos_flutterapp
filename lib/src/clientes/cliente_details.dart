@@ -1,4 +1,4 @@
-// cliente_details.dart
+// clientes/clientes_details.dart
 import 'package:flutter/material.dart';
 
 class ClienteDetailsScreen extends StatelessWidget {
@@ -20,30 +20,27 @@ class ClienteDetailsScreen extends StatelessWidget {
             _buildDetailRow('Nombre', cliente['nombre']),
             _buildDetailRow('Apellido', cliente['apellido']),
             _buildDetailRow('Teléfono', cliente['telefono']),
-            _buildDetailRow('Dirección', _buildDireccion(cliente)),
+            _buildDetailRow('Dirección', cliente['direccion']),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildDetailRow(String label, String value) {
+  Widget _buildDetailRow(String label, String? value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          Text(value),
+          Text(value ?? 'N/A'),
         ],
       ),
     );
   }
-
-  String _buildDireccion(Map<String, dynamic> cliente) {
-    return '${cliente['calle']}, ${cliente['numero']}, ${cliente['colonia']}, ${cliente['codigo_postal']}, ${cliente['ciudad']}, ${cliente['estado']}, ${cliente['pais']}';
-  }
 }
+

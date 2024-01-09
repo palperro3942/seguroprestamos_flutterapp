@@ -16,26 +16,16 @@ class InversionistaDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildDetailRow('Nombre', inversionista['nombre'] ?? ''),
-            // Agregar más detalles según sea necesario
+            Text(
+              'Nombre: ${inversionista['nombre']} ${inversionista['apellido']}',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+            Text('Teléfono: ${inversionista['telefono']}'),
+            SizedBox(height: 10),
+            Text('Dirección: ${inversionista['direccion']}'),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildDetailRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Text(value),
-        ],
       ),
     );
   }

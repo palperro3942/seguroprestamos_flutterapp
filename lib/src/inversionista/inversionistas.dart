@@ -1,6 +1,8 @@
-// inversionistas.dart
 import 'package:flutter/material.dart';
-import 'package:seguroprestamos_flutterapp/src/inversionista/listview_inversionistas.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:seguroprestamos_flutterapp/src/inversionista/inversionista_details.dart';
 
 class InversionistasScreen extends StatefulWidget {
   @override
@@ -8,25 +10,59 @@ class InversionistasScreen extends StatefulWidget {
 }
 
 class _InversionistasScreenState extends State<InversionistasScreen> {
+  List<Map<String, dynamic>> inversionistas = [];
+  List<Map<String, dynamic>> inversionistasFiltrados = [];
+
+  TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchInversionistas();
+  }
+
+  Future<void> _fetchInversionistas() async {
+    final response =
+        await http.get(Uri.parse('http://localhost:3000/inversionistas'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      setState(() {
+        inversionistas = data.cast<Map<String, dynamic>>();
+        inversionistasFiltrados.addAll(inversionistas);
+      });
+    } else {
+      print('Error al cargar inversionistas: ${response.statusCode}');
+    }
+  }
+
+  void _filtrarInversionistas(String filtro) {
+    setState(() {
+      inversionistasFiltrados = inversionistas
+          .where((inversionista) =>
+              inversionista['nombre']
+                  .toLowerCase()
+                  .contains(filtro.toLowerCase()) ||
+              inversionista['apellido']
+                  .toLowerCase()
+                  .contains(filtro.toLowerCase()))
+          .toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Inversionistas'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              // Lógica para agregar un nuevo inversionista
-            },
-          ),
-        ],
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: TextField(
+              controller: _searchController,
+              onChanged: (filtro) => _filtrarInversionistas(filtro),
               decoration: InputDecoration(
                 labelText: 'Buscar Inversionista',
                 prefixIcon: Icon(Icons.search),
@@ -34,9 +70,73 @@ class _InversionistasScreenState extends State<InversionistasScreen> {
             ),
           ),
           Expanded(
-            child: ListViewInversionistas(), // Reemplazar con tu lista de inversionistas
+            child: ListView.builder(
+              itemCount: inversionistasFiltrados.length,
+              itemBuilder: (context, index) {
+                final inversionista = inversionistasFiltrados[index];
+                return ListTile(
+                  title: Text(
+                      '${inversionista['nombre']} ${inversionista['apellido']}'),
+                  subtitle: Text('Teléfono: ${inversionista['telefono']}'),
+                  onTap: () {
+                    _navigateToInversionistaDetails(inversionista);
+                  },
+                );
+              },
+            ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _mostrarAgregarInversionistaDialog();
+        },
+        child: Icon(Icons.person_add),
+      ),
+    );
+  }
+
+  void _mostrarAgregarInversionistaDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Agregar Inversionista'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Aquí puedes agregar campos para ingresar la información del inversionista
+            // Por ejemplo, campos de texto para el nombre, apellido, teléfono, dirección, etc.
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Cerrar el diálogo
+            },
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              // Aquí puedes agregar lógica para guardar el nuevo inversionista
+              // Puedes acceder a la información ingresada utilizando el controlador
+              // _nombreController.text, _apellidoController.text, _telefonoController.text, etc.
+              // También puedes realizar una solicitud POST para guardar el nuevo inversionista en el servidor.
+              _fetchInversionistas(); // Actualiza la lista de inversionistas después de agregar uno nuevo.
+              Navigator.pop(context); // Cerrar el diálogo
+            },
+            child: Text('Guardar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _navigateToInversionistaDetails(Map<String, dynamic> inversionista) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            InversionistaDetailsScreen(inversionista: inversionista),
       ),
     );
   }

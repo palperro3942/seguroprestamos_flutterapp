@@ -19,7 +19,7 @@ class _ListViewInversionistasState extends State<ListViewInversionistas> {
   }
 
   Future<void> _fetchInversionistas() async {
-    final response = await http.get(Uri.parse('http://localhost:3000/personas/inversionista'));
+    final response = await http.get(Uri.parse('http://localhost:3000/inversionistas'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);

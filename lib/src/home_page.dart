@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:seguroprestamos_flutterapp/src/abonos.dart';
 import 'package:seguroprestamos_flutterapp/src/clientes/clientes.dart';
+import 'package:seguroprestamos_flutterapp/src/inversiones/addInversion.dart';
 import 'package:seguroprestamos_flutterapp/src/inversiones/inversiones.dart';
 import 'package:seguroprestamos_flutterapp/src/inversionista/inversionistas.dart';
 import 'package:seguroprestamos_flutterapp/src/prestamo/consultarPrestamo.dart';
@@ -37,6 +38,12 @@ class MyHomePage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => InversionesScreen()),
+              );
+            }),
+            _buildButton(context, 'Realizar Inversion', Colors.red, () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AgregarInversionScreen()),
               );
             }),
             _buildButton(context, 'Abonos', Colors.green, () {
